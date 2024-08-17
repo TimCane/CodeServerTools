@@ -2,7 +2,7 @@ name: Publish Connection Checker
 
 on:
   push:
-    branches: [main, 'connection-checker']
+    branches: [main]
 
 env:
   DOTNET_VERSION: '8.0.x'
@@ -31,5 +31,5 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Application_Artifact
+          name: ConnectionChecker_Artifact
           path: /home/runner/work/CodeServerTools/CodeServerTools/release/
