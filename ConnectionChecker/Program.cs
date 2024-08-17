@@ -134,11 +134,18 @@ namespace ConnectionChecker
             }
 
             var splitByLine = output.Split('\n');
-            if (splitByLine == null || splitByLine.Length == 0)
+            if (splitByLine == null)
             {
                 AppLogger.Instance.LogWarning("No lines in the output from Bash when fetching TunnelId");
                 return null;
             }
+
+            splitByLine = splitByLine.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            if (splitByLine.Length == 0)
+            {
+                AppLogger.Instance.LogWarning("output only contained empty lines when fetching TunnelId");
+            }
+
 
             var lastLine = splitByLine.Last();
             if (string.IsNullOrWhiteSpace(lastLine))
