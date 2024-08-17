@@ -26,7 +26,7 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Publish
-        run: dotnet publish ConnectionChecker/ConnectionChecker.csproj -c Release -o release — nologo
+        run: dotnet publish ConnectionChecker/ConnectionChecker.csproj -c Release -o release
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v2
