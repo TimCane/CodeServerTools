@@ -89,11 +89,11 @@ public static class Bash
     {
         using var process = Process.Start(new ProcessStartInfo
         {
-            FileName = "/bin/bash",
-            Arguments = "-c " + command,
+            FileName = "/bin/sh",
+            Arguments = $"-c \"{command}\"",
             RedirectStandardOutput = true,
             UseShellExecute = false,
-            CreateNoWindow = true
+            CreateNoWindow = true,
         });
 
         if (process == null)
@@ -101,7 +101,7 @@ public static class Bash
             throw new Exception("Unable to lauch process");
         }
 
-        process.WaitForExit();
+        process.WaitForExit(-1);
 
         return process.StandardOutput.ReadToEnd();
     }
