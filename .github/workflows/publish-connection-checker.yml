@@ -1,0 +1,35 @@
+name: Publish Connection Checker
+
+on:
+  push:
+    branches: [main, 'connection-checker']
+
+env:
+  DOTNET_VERSION: '8.0.x'
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+            
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      
+      - name: Restore dependencies
+        run: dotnet restore
+      
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Publish
+        run: dotnet publish ConnectionChecker/ConnectionChecker.csproj -c Release -o release — nologo
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Application_Artifact
+          path: /home/runner/work/ConnectionChecker/ConnectionChecker/release/
