@@ -32,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Application_Artifact
-          path: /home/runner/work/ConnectionChecker/ConnectionChecker/release/
+          path: /home/runner/work/CodeServerTools/CodeServerTools/release/
