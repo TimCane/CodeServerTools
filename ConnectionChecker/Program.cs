@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.CommandLine;
+using System.Text.RegularExpressions;
 using System.Timers;
 using ConnectionChecker.Enums;
 using ConnectionChecker.Structs;
@@ -19,13 +20,41 @@ namespace ConnectionChecker
         public static bool IsShuttingDown { get; set; } = false;
         public static Timer? Timer { get; set; }
 
-        public const int CheckFrequency = 5;
-        public const int GracePeriod = 30;
+        public static int CheckFrequency { get; set; }
+        public static int GracePeriod { get; set; }
 
-        public const int CheckFrequencyMs = CheckFrequency * 60 * 1000;
-        public const int GracePeriodMs = GracePeriod * 60 * 1000;
+        static async Task<int> Main(string[] args)
+        {
+            var checkFrequencyOption = new Option<int>(
+                name: "--check-frequency",
+                description: "How often the application checks for an active connection (in Seconds)",
+                getDefaultValue: () => 5);
 
-        static void Main(string[] args)
+            var gracePeriodOption = new Option<int>(
+                name: "--grace-period",
+                description: "How long the application waits to start the shutdown process (in Seconds)",
+                getDefaultValue: () => 30);
+
+            var rootCommand = new RootCommand("A simple devtunnel connection checker. Shuts down the server after a period in inactivity");
+            rootCommand.AddOption(checkFrequencyOption);
+            rootCommand.AddOption(gracePeriodOption);
+
+            rootCommand.SetHandler((checkFrequency, gracePeriod) =>
+                {
+                    CheckFrequency = checkFrequency == 0 ? 5 : checkFrequency;
+                    GracePeriod = gracePeriod == 0 ? 30 : gracePeriod;
+
+                    AppLogger.Instance.LogInformation("CheckFrequency: {CheckFrequency}, GracePeriod: {GracePeriod}", CheckFrequency, GracePeriod);
+
+                    Run();
+                },
+                checkFrequencyOption, gracePeriodOption);
+
+            return await rootCommand.InvokeAsync(args);
+        }
+
+
+        static void Run()
         {
             AppLogger.Instance.LogInformation("Application Started");
 
@@ -47,11 +76,11 @@ namespace ConnectionChecker
 
         public static void StartTimer()
         {
-            Timer = new Timer(CheckFrequencyMs);
+            Timer = new Timer(CheckFrequency * 60 * 1000);
             Timer.AutoReset = true;
             Timer.Elapsed += new ElapsedEventHandler(CheckForConnections);
 
-            AppLogger.Instance.LogInformation("Starting Check Connection Timer with an interval of {frequency}ms", CheckFrequencyMs);
+            AppLogger.Instance.LogInformation("Starting Check Connection Timer with an interval of {frequency}ms", CheckFrequency);
             Timer.Start();
         }
 
@@ -78,7 +107,7 @@ namespace ConnectionChecker
                 AppLogger.Instance.LogInformation("No active connections found for TunnelId '{tunnelId}'", TunnelId);
 
                 var elapsed = (DateTime.UtcNow - LastSeen).TotalMilliseconds;
-                if (elapsed < GracePeriodMs)
+                if (elapsed < GracePeriod * 60 * 1000)
                 {
                     AppLogger.Instance.LogInformation("Still within grace period ({elapsed}ms), no shutdown initiated", elapsed);
                     return;
@@ -100,7 +129,7 @@ namespace ConnectionChecker
 
         private static void InitiateShutdown()
         {
-            var output = Bash.ExecShutdown(GracePeriodMs);
+            var output = Bash.ExecShutdown(GracePeriod * 60 * 1000);
             if (string.IsNullOrEmpty(output))
             {
                 AppLogger.Instance.LogWarning("Shutdown command did not return any output");
