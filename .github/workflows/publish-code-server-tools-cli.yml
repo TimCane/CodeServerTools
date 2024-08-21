@@ -32,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: CodeServerTools_CLI_Artifact
-          path: /home/runner/work/CodeServerTools.CLI/CodeServerTools.CLI/release/
+          path: /home/runner/work/CodeServerTools/CodeServerTools/release/
