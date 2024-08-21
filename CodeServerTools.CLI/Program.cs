@@ -1,11 +1,11 @@
 ﻿using System.CommandLine;
 using System.Text.RegularExpressions;
 using System.Timers;
-using ConnectionChecker.Enums;
-using ConnectionChecker.Structs;
+using CodeServerTools.CLI.Enums;
+using CodeServerTools.CLI.Structs;
 using Timer = System.Timers.Timer;
 
-namespace ConnectionChecker
+namespace CodeServerTools.CLI
 {
     internal partial class Program
     {

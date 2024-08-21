@@ -1,8 +1,8 @@
 using System;
-using ConnectionChecker.Enums;
+using CodeServerTools.CLI.Enums;
 using Microsoft.Extensions.Logging;
 
-namespace ConnectionChecker;
+namespace CodeServerTools.CLI;
 
 public sealed class AppLogger : ILogger
 {
@@ -11,7 +11,7 @@ public sealed class AppLogger : ILogger
     private AppLogger()
     {
         using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
-        _logger = factory.CreateLogger(nameof(ConnectionChecker));
+        _logger = factory.CreateLogger(nameof(CodeServerTools.CLI));
     }
 
     public static AppLogger Instance { get { return Nested.instance; } }

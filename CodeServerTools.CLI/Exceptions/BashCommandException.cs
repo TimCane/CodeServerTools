@@ -1,6 +1,6 @@
 using System;
 
-namespace ConnectionChecker.Exceptions;
+namespace CodeServerTools.CLI.Exceptions;
 
 public class BashCommandException : Exception
 {

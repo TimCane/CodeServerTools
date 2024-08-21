@@ -1,4 +1,4 @@
-name: Publish Connection Checker
+name: Publish Code Server Tools CLI
 
 on:
   push:
@@ -26,10 +26,10 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Publish
-        run: dotnet publish ConnectionChecker/ConnectionChecker.csproj -c Release -o release
+        run: dotnet publish CodeServerTools.CLI/CodeServerTools.CLI.csproj -c Release -o release
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ConnectionChecker_Artifact
-          path: /home/runner/work/CodeServerTools/CodeServerTools/release/
+          name: CodeServerTools_CLI_Artifact
+          path: /home/runner/work/CodeServerTools.CLI/CodeServerTools.CLI/release/

@@ -2,9 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
-using ConnectionChecker.Exceptions;
+using CodeServerTools.CLI.Exceptions;
 
-namespace ConnectionChecker;
+namespace CodeServerTools.CLI;
 
 public static class Bash
 {
