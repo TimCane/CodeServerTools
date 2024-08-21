@@ -1,4 +1,4 @@
-namespace ConnectionChecker.Enums;
+namespace CodeServerTools.CLI.Enums;
 
 public enum ExitCode
 {

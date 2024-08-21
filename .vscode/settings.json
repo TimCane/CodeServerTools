@@ -1,3 +1,3 @@
 {
-    "dotnet.defaultSolution": "ConnectionChecker.sln"
+    "dotnet.defaultSolution": "CodeServerTools.CLI.sln"
 }

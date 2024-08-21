@@ -1,4 +1,4 @@
-namespace ConnectionChecker.Structs;
+namespace CodeServerTools.CLI.Structs;
 
 public readonly struct TunnelId : IComparable<TunnelId>, IEquatable<TunnelId>
 {
